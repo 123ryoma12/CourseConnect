@@ -3,6 +3,7 @@ from dan.models import User, CourseReview, Course
 from flask import redirect, url_for, render_template, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
 from dan.forms import LoginForm, RegistrationForm, ReviewForm, CourseSearchForm
+import datetime
 
 @app.route('/course/<int:course_id>')
 def course(course_id):
@@ -15,20 +16,24 @@ def course_review(course_id):
     form = ReviewForm()
     course = Course.query.get(course_id)
     if form.validate_on_submit():
+        old_review = CourseReview.query.filter_by(course_id=course_id, user_id=current_user.id).delete()
         review = CourseReview(course_id=course_id, user_id=current_user.id
         , review=form.review.data, rating=form.rating.data
-        , user_grade=form.user_grade.data)
+        , user_grade=form.user_grade.data, date=datetime.datetime.now())
         db.session.add(review)
         db.session.commit()
 
         rating_list = [review.rating for review in course.reviews]
         course.rating = sum(rating_list) / float(len(rating_list))
         flash('Review added', 'success')
+        db.session.commit()
+
         return redirect(url_for('course', course_id=course.id))
     
     return render_template('course_review.html', course=course, form=form)
 
 @login_required
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     courses = Course.query.all()
@@ -44,7 +49,6 @@ def home():
 
 # BOTH PATIENT AND DOCTOR
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/hams', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:

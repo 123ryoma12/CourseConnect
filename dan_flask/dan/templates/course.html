@@ -2,14 +2,32 @@
 
 {% block content %}
 
-    <h1>{{ course.name }}</h1>
+    <h1>{{ course.code }}: {{ course.name }}</h1>
     <hr>
+    
+    <div class="reviews">
+        {% for review in course.reviews %}
+        <div class="comment-box">
+            <div class="author">
+                {{ review.user.username }}    
+            </div>
+            <div class="comment">
+                {{ review.review }}
+            </div>
+            <div class="rating">
+                {{ review.date.strftime("%d-%m-%Y") }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>    
     <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Username</th>
                 <th scope="col">Review</th>
                 <th scope="col">Rating</th>
+                <th scope="col">Date</th>
+
             </tr>
         </thead>
         <tbody>
@@ -18,6 +36,7 @@
                 <td>{{ review.user.username }}</td>
                 <td>{{ review.review }}</td>
                 <td>{{ review.rating }}</td>
+                <td>{{ review.date.strftime("%d-%m-%Y") }}</td>
             </tr>
             {% endfor %}
         </tbody>

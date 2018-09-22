@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, RadioField, DateTimeField, SelectField
-from wtforms.validators import ValidationError, DataRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, RadioField, DateTimeField, SelectField, TextAreaField
+from wtforms.validators import ValidationError, DataRequired, Length, Email, EqualTo, NumberRange
 from dan.models import User
 
 class LoginForm(FlaskForm):
@@ -21,11 +21,11 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Email already registered")
 
 class ReviewForm(FlaskForm):
-    review = StringField('Review', validators=[DataRequired()])
-    rating = IntegerField('Rating')
-    user_grade = IntegerField('Grade')
+    review = TextAreaField('Review', validators=[DataRequired()])
+    rating = IntegerField('Rating', validators=[NumberRange(min=0, max=5)])
+    user_grade = IntegerField('Grade', validators=[NumberRange(min=0, max=100)])
     submit = SubmitField('Add Review') 
 
 class CourseSearchForm(FlaskForm):
-    search = StringField('Search', validators=[DataRequired()])
+    search = StringField('Search')
     submit = SubmitField('Search') 

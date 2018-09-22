@@ -24,6 +24,7 @@ class CourseReview(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     review = db.Column(db.String(128))
     rating = db.Column(db.Integer)
+    date = db.Column(db.DateTime, nullable=True)
     user_grade = db.Column(db.Integer)
 
 class Course(db.Model):
