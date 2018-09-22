@@ -23,7 +23,7 @@ class RegistrationForm(FlaskForm):
 class ReviewForm(FlaskForm):
     review = StringField('Review', validators=[DataRequired()])
     rating = IntegerField('Rating')
-    grade = IntegerField('Grade')
+    user_grade = IntegerField('Grade')
     submit = SubmitField('Add Review') 
 
 class CourseSearchForm(FlaskForm):

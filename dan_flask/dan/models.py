@@ -31,5 +31,6 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
     code = db.Column(db.String(16), nullable=False, unique=True)
+    rating = db.Column(db.Integer)
     reviews = db.relationship('CourseReview', backref='course', lazy=True)
 

@@ -10,9 +10,21 @@ def course(course_id):
     return render_template('course.html', course=course)
 
 @app.route('/course/<int:course_id>/review', methods=['GET', 'POST'])
+@login_required
 def course_review(course_id):
     form = ReviewForm()
     course = Course.query.get(course_id)
+    if form.validate_on_submit():
+        review = CourseReview(course_id=course_id, user_id=current_user.id
+        , review=form.review.data, rating=form.rating.data
+        , user_grade=form.user_grade.data)
+        db.session.add(review)
+        db.session.commit()
+
+        rating_list = [review.rating for review in course.reviews]
+        course.rating = sum(rating_list) / float(len(rating_list))
+        flash('Review added', 'success')
+        return redirect(url_for('course', course_id=course.id))
     
     return render_template('course_review.html', course=course, form=form)
 
@@ -27,6 +39,7 @@ def home():
         for course in old_courses:
             if form.search.data.lower() in course.name.lower() or form.search.data.lower() in course.code.lower():
                 courses.append(course)
+
     return render_template('home.html', courses=courses, form=form)
 
 # BOTH PATIENT AND DOCTOR

@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for review in course.coursereview %}
+            {% for review in course.reviews %}
             <tr>
                 <td>{{ review.user.username }}</td>
                 <td>{{ review.review }}</td>
@@ -23,9 +23,11 @@
         </tbody>
     </table>
 
+    {% if current_user.is_authenticated %}
     <form method="get" action="{{ url_for('course_review', course_id=course.id) }}">
         <button type="submit" class="btn btn-secondary btn-lg btn-block">Review Course</button>
     </form>
+    {% endif %}
 
 {% endblock %}
 
