@@ -1,28 +1,39 @@
 import React, { Component } from 'react'; 
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
-
+import ReactTable from "react-table";
+import 'react-table/react-table.css';
 
 class App extends Component {
   render() {
+    const data = [{
+      course: 'COMP1111',
+      count: 52,
+      rating: {
+        difficulty: '5/5',
+        usefulness: 5,
+      }
+    }];
+
+    const columns = [{
+      Header: 'Course',
+      accessor: 'course' // String-based value accessors!
+    }, {
+      Header: 'Count',
+      accessor: 'count',
+      Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
+    }, {
+      id: 'rating', // Required because our accessor is not a string
+      Header: 'ratingDifficulty',
+      accessor: d => d.rating.difficulty // Custom value accessors!
+    }, {
+      Header: props => <span>Usefulness</span>, // Custom header components!
+      accessor: 'rating.usefulness'
+    }];
+
     return (
-      <Navbar>
-      <Navbar.Header>
-        <Navbar.Brand>
-          <a href="#">React-Bootstrap</a>
-        </Navbar.Brand>
-      </Navbar.Header>
-      <Nav>
-        <NavItem eventKey={1} href="#">Link</NavItem>
-        <NavItem eventKey={2} href="#">Link</NavItem>
-        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-    dropdown">
-          <MenuItem eventKey={3.1}>Action</MenuItem>
-          <MenuItem eventKey={3.2}>Another action</MenuItem>
-          <MenuItem eventKey={3.3}>Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey={3.4}>Separated link</MenuItem>
-        </NavDropdown>
-      </Nav>
-    </Navbar>
+      <ReactTable
+        data={data}
+        columns={columns}
+      />
     );
   }
 }
