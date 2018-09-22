@@ -30,5 +30,5 @@ class ReviewForm(FlaskForm):
 class CourseSearchForm(FlaskForm):
     search = StringField('Search')
     submit = SubmitField('Search')
-    course = SelectField('Course Type', choices=[('0', ''), ('COMP', 'COMP'), ('MATH', 'MATH'), ('ELEC', 'ELEC'), ('MATH', 'MATH')])
+    course = SelectField('Course Type', choices=[('0', ''), ('COMP', 'COMP'), ('MATH', 'MATH'), ('ELEC', 'ELEC'), ('CVEN', 'CVEN')])
  
