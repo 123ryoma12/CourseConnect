@@ -21,11 +21,14 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Email already registered")
 
 class ReviewForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
     review = TextAreaField('Review', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[NumberRange(min=0, max=5)])
-    user_grade = IntegerField('Grade', validators=[NumberRange(min=0, max=100)])
+    user_grade = IntegerField('Your Grade', validators=[NumberRange(min=0, max=100)])
     submit = SubmitField('Add Review') 
 
 class CourseSearchForm(FlaskForm):
     search = StringField('Search')
-    submit = SubmitField('Search') 
+    submit = SubmitField('Search')
+    course = SelectField('Course Type', choices=[('0', ''), ('COMP', 'COMP'), ('MATH', 'MATH'), ('ELEC', 'ELEC'), ('MATH', 'MATH')])
+ 

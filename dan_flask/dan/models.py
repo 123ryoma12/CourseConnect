@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(128), nullable=False, unique=True)
     email = db.Column(db.String(128), nullable=False, unique=True)
     password_hash = db.Column(db.String(128))
+
     reviews = db.relationship('CourseReview', backref='user', lazy=True)
 
     def set_password(self, password):
@@ -22,6 +23,7 @@ class CourseReview(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    title = db.Column(db.String(128))
     review = db.Column(db.String(128))
     rating = db.Column(db.Integer)
     date = db.Column(db.DateTime, nullable=True)
@@ -30,7 +32,7 @@ class CourseReview(db.Model):
 class Course(db.Model):
     __tablename__ = "course"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False, unique=True)
+    name = db.Column(db.String(64), nullable=False, unique=False)
     code = db.Column(db.String(16), nullable=False, unique=True)
     rating = db.Column(db.Integer)
     reviews = db.relationship('CourseReview', backref='course', lazy=True)

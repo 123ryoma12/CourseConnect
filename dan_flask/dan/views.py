@@ -8,6 +8,8 @@ import datetime
 @app.route('/course/<int:course_id>')
 def course(course_id):
     course = Course.query.get(course_id)
+
+
     return render_template('course.html', course=course)
 
 @app.route('/course/<int:course_id>/review', methods=['GET', 'POST'])
@@ -18,7 +20,7 @@ def course_review(course_id):
     if form.validate_on_submit():
         old_review = CourseReview.query.filter_by(course_id=course_id, user_id=current_user.id).delete()
         review = CourseReview(course_id=course_id, user_id=current_user.id
-        , review=form.review.data, rating=form.rating.data
+        , review=form.review.data, rating=form.rating.data, title=form.title.data
         , user_grade=form.user_grade.data, date=datetime.datetime.now())
         db.session.add(review)
         db.session.commit()
@@ -32,6 +34,11 @@ def course_review(course_id):
     
     return render_template('course_review.html', course=course, form=form)
 
+@app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
+def profile_user(user_id):
+    user = User.query.get(user_id)
+    return render_template('profile.html', user=user)
+
 @login_required
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -42,8 +49,12 @@ def home():
         old_courses = courses
         courses = []
         for course in old_courses:
-            if form.search.data.lower() in course.name.lower() or form.search.data.lower() in course.code.lower():
-                courses.append(course)
+            if(form.course.data == '0'):
+                if form.search.data.lower() in course.name.lower():
+                    courses.append(course)
+            else:
+                if form.search.data.lower() in course.name.lower() and form.course.data.lower() in course.code.lower():
+                    courses.append(course)
 
     return render_template('home.html', courses=courses, form=form)
 

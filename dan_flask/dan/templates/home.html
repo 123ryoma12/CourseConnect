@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
 <body>
-    <h1>Dan's List</h1>
+    <h1>CourseConnect</h1>
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <div class="form-group">
+                {{ form.search.label(class="form-control-label") }} 
+
             <div class="form-label-group">
+
             {% if form.search.errors %}
                {{ form.search(class="form-control is-invalid")}}
                 <div class="invalid-feedback">
@@ -17,6 +20,8 @@
                 {{ form.search(class="form-control") }}
             {% endif %}
             </div>
+            {{ form.course.label(class="form-control-label") }}
+            {{ form.course(class="form-control") }}
         </div>
         {{ form.submit(class="btn btn-primary btn-block")}}
     </form>
@@ -26,9 +31,9 @@
         <tbody>
             <div class="auto_container">
             {% for course in courses %}
-            <a href="{{ url_for('course', course_id=course.id) }}">
-                <div class="small card">
-                    <header class="title">{{ course.code }}</header>
+            
+                <div class="small card" onclick="window.open(' {{url_for('course', course_id=course.id)}} ')">
+                    <header class="title" style="color:#fff">{{ course.code }}</header>
                     <img class="pic" src="http://lorempixel.com/image_output/city-q-g-640-480-9.jpg" alt=""/>
                     <div class="content">
                       <strong>{{ course.name }}</strong>
@@ -42,7 +47,7 @@
                         {% endfor %}
                     </div>
                 </div>
-            </a>
+            
             {% endfor %}
             </div>
         </tbody>
