@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>{{ course.name }}</h1>
+    <hr>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Review</th>
+                <th scope="col">Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in course.coursereview %}
+            <tr>
+                <td>{{ review.user.username }}</td>
+                <td>{{ review.review }}</td>
+                <td>{{ review.rating }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <form method="get" action="{{ url_for('course_review', course_id=course.id) }}">
+        <button type="submit" class="btn btn-secondary btn-lg btn-block">Review Course</button>
+    </form>
+
+{% endblock %}
+
